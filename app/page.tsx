@@ -1399,13 +1399,16 @@ export default function Home() {
                 {new Date().getFullYear()} Vertex Media. All rights reserved.
               </p>
               <div className="flex items-center gap-6">
-                {[Instagram, Linkedin].map((Icon, i) => (
-                  <MagneticButton key={i}>
-                    <a href="#" className="text-gray-400 hover:text-primary transition-colors">
-                      <Icon className="w-6 h-6" />
-                    </a>
-                  </MagneticButton>
-                ))}
+                <MagneticButton>
+                  <a href="https://www.instagram.com/vertexmedia.qa/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+                    <Instagram className="w-6 h-6" />
+                  </a>
+                </MagneticButton>
+                <MagneticButton>
+                  <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+                    <Linkedin className="w-6 h-6" />
+                  </a>
+                </MagneticButton>
               </div>
             </motion.div>
           </motion.div>
