@@ -549,7 +549,7 @@ export default function Home() {
                 variants={fadeUpVariants}
                 className="text-sm font-medium text-white/80 tracking-wide"
               >
-                2024
+                2026
               </motion.p>
               
               <motion.h1 
