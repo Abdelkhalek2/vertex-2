@@ -451,9 +451,9 @@ export default function Home() {
         className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <nav className="flex items-center justify-between h-20">
+          <nav className="flex items-center justify-between h-28">
             <Link href="/" className="flex items-center">
-              <img src="/logo.svg" alt="Vertex Media" className="h-16 w-auto" />
+              <img src="/logo.svg" alt="Vertex Media" className="h-24 w-auto" />
             </Link>
             <div className="hidden lg:flex items-center gap-10">
               {["Services", "About", "Influencers", "Career", "Contact"].map((item) => (
