@@ -453,7 +453,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <nav className="flex items-center justify-between h-20">
             <Link href="/" className="flex items-center">
-              <img src="/logo.svg" alt="Vertex Media" className="h-10 w-auto" />
+              <img src="/logo.svg" alt="Vertex Media" className="h-16 w-auto" />
             </Link>
             <div className="hidden lg:flex items-center gap-10">
               {["Services", "About", "Influencers", "Career", "Contact"].map((item) => (
@@ -1350,7 +1350,7 @@ export default function Home() {
                 whileHover={{ scale: 1.1 }}
                 className="cursor-pointer"
               >
-                <img src="/logo.svg" alt="Vertex Media" className="h-12 w-auto" />
+                <img src="/logo.svg" alt="Vertex Media" className="h-32 w-auto" />
               </motion.div>
               <div className="flex items-center gap-2">
                 <motion.span
