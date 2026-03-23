@@ -661,7 +661,7 @@ export default function Home() {
                   className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.95]"
                 >
                   <TextReveal text="New" className="block" />
-                  <TextReveal text="Generation" className="block text-primary" />
+                  <span className="block" style={{ color: '#3df1f6' }}>Generation</span>
                 </motion.h2>
                 <motion.p
                   variants={fadeUpVariants}
@@ -701,7 +701,7 @@ export default function Home() {
                 >
                   <span className="text-2xl font-black group-hover:scale-125 transition-transform" style={{ color: '#150089' }}>{service.number}</span>
                   <div>
-                    <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors">{service.title}</h3>
+                    <h3 className="text-lg font-bold mb-1 transition-colors" style={{ color: 'inherit' }}>{service.title}</h3>
                     <p className="text-sm text-gray-500">{service.description}</p>
                   </div>
                 </motion.div>
@@ -774,7 +774,7 @@ export default function Home() {
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="space-y-4 p-6 bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
               >
-                <h3 className="text-sm font-black tracking-wider text-primary group-hover:text-shimmer">
+                <h3 className="text-sm font-black tracking-wider group-hover:text-shimmer" style={{ color: '#150089' }}>
                   {value.title}
                 </h3>
                 <motion.div
@@ -908,7 +908,7 @@ export default function Home() {
                 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[0.95]"
               >
                 <TextReveal text="Influencers and" className="block" />
-                <TextReveal text="Creators" className="block text-primary" />
+                <span className="block" style={{ color: '#3df1f6' }}>Creators</span>
               </motion.h2>
               <motion.p
                 variants={fadeUpVariants}
@@ -958,7 +958,7 @@ export default function Home() {
                   className="absolute bottom-10 left-10 flex items-center justify-center"
                 >
                   <div className="w-20 h-20 bg-white shadow-xl rounded-2xl flex items-center justify-center">
-                    <MessageCircle className="w-10 h-10 text-primary" />
+                    <MessageCircle className="w-10 h-10" style={{ color: '#150089' }} />
                   </div>
                 </motion.div>
               </div>
@@ -1127,7 +1127,7 @@ export default function Home() {
                 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[0.95]"
               >
                 <TextReveal text="Event" className="block" />
-                <TextReveal text="Coordination" className="block text-primary" />
+                <span className="block" style={{ color: '#3df1f6' }}>Coordination</span>
               </motion.h2>
               <motion.p
                 variants={fadeUpVariants}
