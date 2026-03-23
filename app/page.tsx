@@ -933,34 +933,25 @@ export default function Home() {
               variants={slideInRight}
               className="relative"
             >
-              <div className="relative h-80 lg:h-96">
-                <motion.div
-                  animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-0 left-0 w-32 h-32 lg:w-40 lg:h-40 rounded-full"
-                  style={{ backgroundColor: '#3df1f6' }}
-                />
-                <motion.div
-                  animate={{ y: [0, 20, 0], scale: [1, 1.1, 1] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute bottom-0 right-0 w-40 h-40 lg:w-52 lg:h-52 rounded-full"
-                  style={{ backgroundColor: '#150089' }}
-                />
-                <motion.div
-                  animate={{ rotate: [12, 24, 12], scale: [1, 1.05, 1] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 lg:w-32 lg:h-32 rounded-2xl"
-                  style={{ backgroundColor: '#3df1f6', opacity: 0.7 }}
-                />
+              <div className="relative h-80 lg:h-[450px] flex items-center justify-center">
+                {/* 3D Infographic Image */}
                 <motion.div
                   animate={{ y: [0, -15, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute bottom-10 left-10 flex items-center justify-center"
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative z-10"
                 >
-                  <div className="w-20 h-20 bg-white shadow-xl rounded-2xl flex items-center justify-center">
-                    <MessageCircle className="w-10 h-10" style={{ color: '#150089' }} />
-                  </div>
+                  <img
+                    src="/images/influencer-3d-graphic.jpg"
+                    alt="Influencer Marketing 3D Illustration"
+                    className="w-full max-w-md lg:max-w-lg h-auto object-contain drop-shadow-2xl"
+                    crossOrigin="anonymous"
+                  />
                 </motion.div>
+                {/* Background glow effect */}
+                <div 
+                  className="absolute inset-0 rounded-full blur-3xl opacity-20"
+                  style={{ background: 'radial-gradient(circle, #3df1f6 0%, transparent 70%)' }}
+                />
               </div>
             </motion.div>
           </motion.div>
