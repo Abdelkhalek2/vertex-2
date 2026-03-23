@@ -941,9 +941,9 @@ export default function Home() {
                   className="relative z-10"
                 >
                   <img
-                    src="/images/influencer-3d-graphic.jpg"
+                    src="/images/influencer-3d-isometric.jpg"
                     alt="Influencer Marketing 3D Illustration"
-                    className="w-full max-w-md lg:max-w-lg h-auto object-contain drop-shadow-2xl"
+                    className="w-full max-w-md lg:max-w-xl h-auto object-contain drop-shadow-2xl rounded-2xl"
                     crossOrigin="anonymous"
                   />
                 </motion.div>
