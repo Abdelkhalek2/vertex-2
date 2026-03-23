@@ -103,8 +103,8 @@ export function VideoScrubSection() {
         {/* Progress bar */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
           <div 
-            className="h-full bg-white transition-all duration-100"
-            style={{ width: `${progress * 100}%` }}
+            className="h-full transition-all duration-100"
+            style={{ width: `${progress * 100}%`, backgroundColor: '#3df1f6' }}
           />
         </div>
 
@@ -113,9 +113,11 @@ export function VideoScrubSection() {
           {textBlocks.map((_, index) => (
             <div
               key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                activeIndex === index ? "bg-white scale-125" : "bg-white/30"
-              }`}
+              className="w-2 h-2 rounded-full transition-all duration-300"
+              style={{ 
+                backgroundColor: activeIndex === index ? '#3df1f6' : 'rgba(255,255,255,0.3)',
+                transform: activeIndex === index ? 'scale(1.25)' : 'scale(1)'
+              }}
             />
           ))}
         </div>

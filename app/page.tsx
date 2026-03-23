@@ -190,7 +190,8 @@ function ContentIsKingSection() {
         <MagneticButton>
           <Link
             href="#services"
-            className="inline-block bg-white text-black px-10 py-4 text-sm font-medium border border-gray-200 hover:bg-black hover:text-white transition-all duration-300 rounded-full shadow-sm"
+            className="inline-block px-10 py-4 text-sm font-medium transition-all duration-300 rounded-full shadow-sm"
+            style={{ backgroundColor: '#150089', color: 'white', border: '2px solid #3df1f6' }}
           >
             Our Services
           </Link>
@@ -255,7 +256,7 @@ function TestimonialsSection() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <svg className="w-16 h-12 mx-auto text-black" viewBox="0 0 64 48" fill="currentColor">
+            <svg className="w-16 h-12 mx-auto" viewBox="0 0 64 48" fill="#150089">
               <path d="M0 48V32C0 14.327 14.327 0 32 0h4v12h-4c-11.046 0-20 8.954-20 20v4h20v12H0zm32 0V32c0-17.673 14.327-32 32-32h4v12h-4c-11.046 0-20 8.954-20 20v4h20v12H32z" transform="rotate(180 32 24)" />
             </svg>
           </motion.div>
@@ -289,7 +290,7 @@ function TestimonialsSection() {
                   {testimonials[currentIndex].quote}
                 </p>
                 <div>
-                  <p className="font-bold text-lg text-black">{testimonials[currentIndex].name}</p>
+                  <p className="font-bold text-lg" style={{ color: '#150089' }}>{testimonials[currentIndex].name}</p>
                   <p className="text-gray-500">{testimonials[currentIndex].company}</p>
                 </div>
               </motion.div>
@@ -315,8 +316,11 @@ function TestimonialsSection() {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-black w-6' : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
+                className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{ 
+                  backgroundColor: index === currentIndex ? '#150089' : '#d1d5db',
+                  width: index === currentIndex ? '24px' : '8px'
+                }}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
@@ -556,7 +560,7 @@ export default function Home() {
                 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.9] text-white"
               >
                 <TextReveal text="Marketing" className="block" />
-                <span className="text-primary text-shimmer">Elevated</span>
+                <span className="text-shimmer" style={{ color: '#3df1f6' }}>Elevated</span>
               </motion.h1>
 
               <motion.p
@@ -570,7 +574,8 @@ export default function Home() {
                 <MagneticButton>
                   <Link
                     href="#contact"
-                    className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 text-sm font-bold hover:bg-primary/90 transition-colors group animate-pulse-glow"
+                    className="inline-flex items-center gap-3 text-white px-8 py-4 text-sm font-bold transition-colors group animate-pulse-glow"
+                    style={{ backgroundColor: '#3df1f6', color: '#150089' }}
                   >
                     Get Started
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
@@ -586,9 +591,9 @@ export default function Home() {
               className="relative flex items-center justify-center"
             >
               <div className="w-64 h-64 lg:w-96 lg:h-96 relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/50 to-transparent rounded-full blur-3xl animate-pulse" />
-                <div className="absolute inset-8 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 animate-float">
-                  <Sparkles className="w-24 h-24 lg:w-32 lg:h-32 text-white animate-spin-slow" />
+                <div className="absolute inset-0 rounded-full blur-3xl animate-pulse" style={{ background: 'linear-gradient(to bottom right, rgba(61, 241, 246, 0.5), transparent)' }} />
+                <div className="absolute inset-8 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border animate-float" style={{ borderColor: 'rgba(61, 241, 246, 0.3)' }}>
+                  <Sparkles className="w-24 h-24 lg:w-32 lg:h-32 animate-spin-slow" style={{ color: '#3df1f6' }} />
                 </div>
               </div>
             </motion.div>
@@ -613,7 +618,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-6 lg:px-12 bg-black text-white">
+      <section className="py-16 px-6 lg:px-12 text-white" style={{ backgroundColor: '#150089' }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -629,7 +634,7 @@ export default function Home() {
               { value: 25, suffix: "M+", label: "Reach Generated" },
             ].map((stat, i) => (
               <motion.div key={i} variants={scaleUp} className="space-y-2">
-                <p className="text-4xl md:text-5xl font-black text-primary">
+                <p className="text-4xl md:text-5xl font-black" style={{ color: '#3df1f6' }}>
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} />
                 </p>
                 <p className="text-sm text-white/60">{stat.label}</p>
@@ -672,9 +677,10 @@ export default function Home() {
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 10 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="w-40 h-40 lg:w-52 lg:h-52 bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl flex items-center justify-center animate-float-slow"
+                  className="w-40 h-40 lg:w-52 lg:h-52 rounded-3xl flex items-center justify-center animate-float-slow"
+                  style={{ background: 'linear-gradient(to bottom right, rgba(21, 0, 137, 0.2), rgba(61, 241, 246, 0.1))' }}
                 >
-                  <ThumbsUp className="w-20 h-20 lg:w-28 lg:h-28 text-primary" />
+                  <ThumbsUp className="w-20 h-20 lg:w-28 lg:h-28" style={{ color: '#150089' }} />
                 </motion.div>
               </motion.div>
             </div>
@@ -693,7 +699,7 @@ export default function Home() {
                   whileHover={{ x: 10 }}
                   className="flex items-start gap-6 py-4 border-b border-gray-200 group hover:border-primary transition-all cursor-pointer"
                 >
-                  <span className="text-2xl font-black text-primary group-hover:scale-125 transition-transform">{service.number}</span>
+                  <span className="text-2xl font-black group-hover:scale-125 transition-transform" style={{ color: '#150089' }}>{service.number}</span>
                   <div>
                     <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors">{service.title}</h3>
                     <p className="text-sm text-gray-500">{service.description}</p>
@@ -776,7 +782,8 @@ export default function Home() {
                   whileInView={{ width: "100%" }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.2, duration: 0.8 }}
-                  className="h-0.5 bg-gradient-to-r from-primary to-primary/30"
+                  className="h-0.5"
+                  style={{ background: 'linear-gradient(to right, #150089, #3df1f6)' }}
                 />
                 <p className="text-xs text-gray-500 leading-relaxed uppercase tracking-wide">
                   {value.description}
@@ -794,7 +801,7 @@ export default function Home() {
       <ContentIsKingSection />
 
       {/* Services with Phone Mockup */}
-      <section id="services" className="py-24 lg:py-32 px-6 lg:px-12" style={{ backgroundColor: '#1a237e' }}>
+      <section id="services" className="py-24 lg:py-32 px-6 lg:px-12" style={{ backgroundColor: '#150089' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-center">
             <div className="space-y-12">
@@ -809,14 +816,15 @@ export default function Home() {
                   className="space-y-2 cursor-pointer group"
                 >
                   <div className="flex items-baseline gap-4">
-                    <span className="text-4xl md:text-5xl font-black text-white group-hover:text-primary transition-colors">{service.number}</span>
+                    <span className="text-4xl md:text-5xl font-black transition-colors" style={{ color: '#3df1f6' }}>{service.number}</span>
                   </div>
                   <motion.div
                     initial={{ width: "30%" }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.2, duration: 0.8 }}
-                    className="h-px bg-white/30 group-hover:bg-primary transition-colors"
+                    className="h-px transition-colors"
+                    style={{ backgroundColor: 'rgba(61, 241, 246, 0.4)' }}
                   />
                   <h3 className="text-lg md:text-xl font-medium text-white pt-2">{service.title}</h3>
                 </motion.div>
@@ -831,7 +839,7 @@ export default function Home() {
               className="flex justify-center order-first lg:order-none"
             >
               <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary to-blue-500 rounded-[3.5rem] blur-xl opacity-30 group-hover:opacity-60 transition-opacity animate-pulse" />
+                <div className="absolute -inset-4 rounded-[3.5rem] blur-xl opacity-30 group-hover:opacity-60 transition-opacity animate-pulse" style={{ background: 'linear-gradient(to right, #3df1f6, #150089)' }} />
                 <div className="relative w-64 md:w-72 bg-gray-800 rounded-[3rem] p-2 shadow-2xl">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-800 rounded-b-2xl z-10" />
                   <div className="relative bg-black rounded-[2.5rem] overflow-hidden aspect-[9/19]">
@@ -866,14 +874,15 @@ export default function Home() {
                   className="space-y-2 cursor-pointer group"
                 >
                   <div className="flex items-baseline gap-4">
-                    <span className="text-4xl md:text-5xl font-black text-white group-hover:text-primary transition-colors">{service.number}</span>
+                    <span className="text-4xl md:text-5xl font-black transition-colors" style={{ color: '#3df1f6' }}>{service.number}</span>
                   </div>
                   <motion.div
                     initial={{ width: "30%" }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.2, duration: 0.8 }}
-                    className="h-px bg-white/30 group-hover:bg-primary transition-colors"
+                    className="h-px transition-colors"
+                    style={{ backgroundColor: 'rgba(61, 241, 246, 0.4)' }}
                   />
                   <h3 className="text-lg md:text-xl font-medium text-white pt-2">{service.title}</h3>
                 </motion.div>
@@ -928,17 +937,20 @@ export default function Home() {
                 <motion.div
                   animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-0 left-0 w-32 h-32 lg:w-40 lg:h-40 bg-blue-500 rounded-full"
+                  className="absolute top-0 left-0 w-32 h-32 lg:w-40 lg:h-40 rounded-full"
+                  style={{ backgroundColor: '#3df1f6' }}
                 />
                 <motion.div
                   animate={{ y: [0, 20, 0], scale: [1, 1.1, 1] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute bottom-0 right-0 w-40 h-40 lg:w-52 lg:h-52 bg-primary rounded-full"
+                  className="absolute bottom-0 right-0 w-40 h-40 lg:w-52 lg:h-52 rounded-full"
+                  style={{ backgroundColor: '#150089' }}
                 />
                 <motion.div
                   animate={{ rotate: [12, 24, 12], scale: [1, 1.05, 1] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 lg:w-32 lg:h-32 bg-yellow-400 rounded-2xl"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 lg:w-32 lg:h-32 rounded-2xl"
+                  style={{ backgroundColor: '#3df1f6', opacity: 0.7 }}
                 />
                 <motion.div
                   animate={{ y: [0, -15, 0] }}
@@ -955,8 +967,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Talents & Models Section - Yellow with Teal Circle */}
-      <section className="relative min-h-[80vh] overflow-hidden" style={{ backgroundColor: '#f5a623' }}>
+      {/* Talents & Models Section - Vertex Brand Colors */}
+      <section className="relative min-h-[80vh] overflow-hidden" style={{ backgroundColor: '#3df1f6' }}>
         <div className="grid lg:grid-cols-2 h-full min-h-[80vh]">
           {/* Left - Model Image */}
           <motion.div
@@ -974,16 +986,16 @@ export default function Home() {
             />
           </motion.div>
 
-          {/* Right - Teal Circle with Text */}
+          {/* Right - Circle with Text */}
           <div className="relative flex items-center justify-center py-16 lg:py-0">
-            {/* Teal Circle */}
+            {/* Deep Purple Circle */}
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
               className="absolute left-0 lg:-left-20 w-[90vw] lg:w-[50vw] h-[90vw] lg:h-[50vw] max-w-[600px] max-h-[600px] rounded-full flex items-center justify-center"
-              style={{ backgroundColor: '#2d7d7d' }}
+              style={{ backgroundColor: '#150089' }}
             >
               <div className="text-center space-y-8 px-8">
                 <motion.div
@@ -1044,7 +1056,10 @@ export default function Home() {
                   <MagneticButton>
                     <Link
                       href="#contact"
-                      className="inline-block px-12 py-4 border-2 border-white text-white font-medium tracking-widest hover:bg-white hover:text-teal-700 transition-all duration-300"
+                      className="inline-block px-12 py-4 border-2 text-white font-medium tracking-widest transition-all duration-300"
+                      style={{ borderColor: '#3df1f6', backgroundColor: 'transparent' }}
+                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#3df1f6'; e.currentTarget.style.color = '#150089'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'white'; }}
                     >
                       VERTEX MODELS
                     </Link>
@@ -1058,11 +1073,11 @@ export default function Home() {
         {/* Decorative shadow circle */}
         <motion.div
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.3 }}
+          whileInView={{ opacity: 0.4 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.8 }}
           className="absolute bottom-[-5%] left-[30%] w-64 h-64 rounded-full"
-          style={{ backgroundColor: '#c4854a' }}
+          style={{ backgroundColor: '#0a0050' }}
         />
       </section>
 
@@ -1097,7 +1112,8 @@ export default function Home() {
                   whileInView={{ x: 0, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
-                  className="absolute -bottom-6 -right-6 bg-primary text-white p-6"
+                  className="absolute -bottom-6 -right-6 text-white p-6"
+                  style={{ backgroundColor: '#150089' }}
                 >
                   <p className="text-sm font-bold">Events</p>
                   <p className="text-2xl font-black"><AnimatedCounter target={50} suffix="+" /></p>
@@ -1213,7 +1229,7 @@ export default function Home() {
               className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white glitch-text"
             >
               <TextReveal text="DIGITAL" className="block" />
-              <TextReveal text="MARKETING" className="block text-primary" />
+              <span className="block" style={{ color: '#3df1f6' }}>MARKETING</span>
             </motion.h2>
 
             <motion.p
@@ -1241,7 +1257,7 @@ export default function Home() {
                   whileHover={{ y: -10, scale: 1.05 }}
                   className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 text-left group cursor-pointer hover:bg-white/10 transition-all card-3d"
                 >
-                  <item.icon className="w-10 h-10 text-primary mb-4 group-hover:scale-125 transition-transform" />
+                  <item.icon className="w-10 h-10 mb-4 group-hover:scale-125 transition-transform" style={{ color: '#3df1f6' }} />
                   <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
                   <p className="text-sm text-white/50">{item.desc}</p>
                 </motion.div>
@@ -1275,7 +1291,7 @@ export default function Home() {
       </section>
 
       {/* Career Section */}
-      <section id="career" className="py-24 lg:py-32 px-6 lg:px-12 bg-gray-900 text-white relative overflow-hidden">
+      <section id="career" className="py-24 lg:py-32 px-6 lg:px-12 text-white relative overflow-hidden" style={{ backgroundColor: '#0a0050' }}>
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial="hidden"
@@ -1289,7 +1305,7 @@ export default function Home() {
               className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight glitch-text"
             >
               <TextReveal text="CREATING" className="block" />
-              <TextReveal text="VIRTUAL WORLDS" className="block text-primary" />
+              <span className="block" style={{ color: '#3df1f6' }}>VIRTUAL WORLDS</span>
             </motion.h2>
             <motion.p
               variants={fadeUpVariants}
@@ -1301,7 +1317,8 @@ export default function Home() {
               <MagneticButton>
                 <Link
                   href="#contact"
-                  className="inline-flex items-center gap-3 bg-primary text-black px-10 py-5 text-lg font-bold hover:bg-white transition-colors group animate-pulse-glow"
+                  className="inline-flex items-center gap-3 text-white px-10 py-5 text-lg font-bold hover:bg-white hover:text-black transition-colors group animate-pulse-glow"
+                  style={{ backgroundColor: '#3df1f6', color: '#150089' }}
                 >
                   Join Our Team
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
@@ -1315,7 +1332,8 @@ export default function Home() {
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-primary/30 rounded-full"
+            className="absolute w-2 h-2 rounded-full"
+            style={{ backgroundColor: 'rgba(61, 241, 246, 0.4)' }}
             style={{
               left: `${Math.random() * 100}%`,
               bottom: "-10%",
@@ -1371,23 +1389,23 @@ export default function Home() {
                 className="flex items-center gap-4 group"
                 whileHover={{ x: 10 }}
               >
-                <Phone className="w-5 h-5 text-primary" />
-                <span className="group-hover:text-primary transition-colors underline-grow">+974 3334 3025</span>
+                <Phone className="w-5 h-5" style={{ color: '#150089' }} />
+                <span className="transition-colors underline-grow" style={{ color: '#150089' }}>+974 3334 3025</span>
               </motion.a>
               <motion.div
                 className="flex items-center gap-4"
                 whileHover={{ x: 10 }}
               >
-                <MapPin className="w-5 h-5 text-primary" />
-                <span>Doha, Qatar</span>
+                <MapPin className="w-5 h-5" style={{ color: '#150089' }} />
+                <span style={{ color: '#150089' }}>Doha, Qatar</span>
               </motion.div>
               <motion.a
                 href="mailto:hello@vertexmedia.qa"
                 className="flex items-center gap-4 group"
                 whileHover={{ x: 10 }}
               >
-                <Mail className="w-5 h-5 text-primary" />
-                <span className="group-hover:text-primary transition-colors underline-grow">hello@vertexmedia.qa</span>
+                <Mail className="w-5 h-5" style={{ color: '#150089' }} />
+                <span className="transition-colors underline-grow" style={{ color: '#150089' }}>hello@vertexmedia.qa</span>
               </motion.a>
             </motion.div>
 
@@ -1400,12 +1418,12 @@ export default function Home() {
               </p>
               <div className="flex items-center gap-6">
                 <MagneticButton>
-                  <a href="https://www.instagram.com/vertexmedia.qa/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+                  <a href="https://www.instagram.com/vertexmedia.qa/" target="_blank" rel="noopener noreferrer" className="transition-colors" style={{ color: '#150089' }}>
                     <Instagram className="w-6 h-6" />
                   </a>
                 </MagneticButton>
                 <MagneticButton>
-                  <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+                  <a href="#" className="transition-colors" style={{ color: '#150089' }}>
                     <Linkedin className="w-6 h-6" />
                   </a>
                 </MagneticButton>
