@@ -1,12 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Barlow } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import CustomCursor from "@/components/CustomCursor"
 import "./globals.css"
 
-const inter = Inter({
+const barlow = Barlow({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-barlow",
 })
 
 export const metadata: Metadata = {
@@ -22,10 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${barlow.className} antialiased`}>
+        <CustomCursor />
         {children}
         <Analytics />
       </body>
     </html>
   )
 }
+
