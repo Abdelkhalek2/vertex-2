@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   title: "Vertex Media - Premium Social Media Agency",
   description: "Elevating Digital Experiences. A premium social media agency based in Doha, Qatar.",
   generator: "v0.app",
+  icons: {
+    icon: "/logo (1).svg",
+    apple: "/logo (1).svg",
+  },
 }
 
 export default function RootLayout({
