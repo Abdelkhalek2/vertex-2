@@ -1,9 +1,12 @@
 "use client"
 
+import Image from "next/image"
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, AnimatePresence } from "framer-motion"
 import { ArrowRight, Phone, MapPin, Mail, Instagram, Linkedin, Menu, Search, ThumbsUp, Sparkles, Megaphone, Calendar, MessageCircle, X } from "lucide-react"
 import Link from "next/link"
 import { VideoScrubSection } from "@/components/video-scrub-section"
+import { ServicesSection } from "@/components/services-section"
+import { ClientLogos } from "@/components/client-logos"
 import { useState, useRef, useEffect } from "react"
 
 // Animation Variants
@@ -107,93 +110,63 @@ const contentImages = [
 
 // Content Is King Section Component - with scrolling image strip inside text
 function ContentIsKingSection() {
+  const images = [
+    "/cup-dessert-with-whipped-cream-strawberries-cherries-orange.jpg",
+    "/basket-with-bread-sliced-eggplant.jpg",
+    "/images/_يبيله قهوة-13_page-0001.jpg",
+    "/images/_يبيله قهوة-13_page-0002.jpg",
+    "/images/_يبيله قهوة-13_page-0003.jpg",
+    "/images/_يبيله قهوة-13_page-0004.jpg",
+    "/images/_يبيله قهوة-13_page-0005.jpg",
+  ]
+
   return (
-    <section className="relative h-[70vh] md:h-[90vh] overflow-hidden bg-gray-100">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, black 1px, transparent 0)',
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+    <section className="relative min-h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
+      <div className="relative w-full flex-1 flex flex-col items-center justify-center pointer-events-none select-none">
+        <svg width="100%" height="100%" viewBox="0 0 1000 450" className="w-full h-auto max-h-[70vh]">
+          <defs>
+            <mask id="contentMask">
+              <rect width="1000" height="450" fill="black" />
+              <text x="50%" y="38%" textAnchor="middle" fill="white" fontSize="165" fontWeight="900" style={{ fontFamily: 'system-ui, sans-serif' }}>CONTENT</text>
+              <text x="50%" y="78%" textAnchor="middle" fill="white" fontSize="165" fontWeight="900" style={{ fontFamily: 'system-ui, sans-serif' }}>IS KING</text>
+            </mask>
+          </defs>
 
-      {/* Text with Scrolling Image Strip Inside */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center relative">
-          {/* SVG with clip path for text masking */}
-          <svg
-            className="w-[95vw] md:w-[85vw] max-w-[1400px]"
-            viewBox="0 0 1000 350"
-            style={{ overflow: 'visible' }}
-          >
-            <defs>
-              <clipPath id="contentTextClip">
-                <text
-                  x="500"
-                  y="140"
-                  textAnchor="middle"
-                  style={{
-                    fontSize: '180px',
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontWeight: 900,
-                    letterSpacing: '-0.05em'
-                  }}
-                >
-                  CONTENT
-                </text>
-                <text
-                  x="500"
-                  y="310"
-                  textAnchor="middle"
-                  style={{
-                    fontSize: '180px',
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontWeight: 900,
-                    letterSpacing: '-0.05em'
-                  }}
-                >
-                  IS KING
-                </text>
-              </clipPath>
-            </defs>
-
-            {/* Scrolling images container clipped by text */}
-            <g clipPath="url(#contentTextClip)">
-              <foreignObject x="-500" y="0" width="2000" height="350">
-                <div
-                  className="flex h-full animate-scroll-left"
-                  style={{ width: '200%' }}
-                >
-                  {[...contentImages, ...contentImages, ...contentImages, ...contentImages].map((img, i) => (
-                    <img
-                      key={i}
-                      src={img}
-                      alt=""
-                      className="h-full w-auto object-cover flex-shrink-0"
-                      crossOrigin="anonymous"
-                      style={{ minWidth: '250px' }}
-                    />
-                  ))}
-                </div>
-              </foreignObject>
-            </g>
-          </svg>
-        </div>
+          {/* This is the scrolling corridor of images */}
+          <g mask="url(#contentMask)">
+            <motion.g
+              animate={{ x: [0, -(images.length * 300)] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
+              {[...images, ...images, ...images].map((src, i) => (
+                <image
+                  key={i}
+                  href={src}
+                  x={i * 300}
+                  y="0"
+                  width="300"
+                  height="500"
+                  preserveAspectRatio="xMidYMid slice"
+                />
+              ))}
+            </motion.g>
+          </g>
+        </svg>
       </div>
 
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20"
+        className="relative z-20 pb-20"
       >
         <MagneticButton>
           <Link
             href="#services"
-            className="inline-block px-10 py-4 text-sm font-medium transition-all duration-300 rounded-full shadow-sm"
-            style={{ backgroundColor: '#150089', color: 'white', border: '2px solid #3df1f6' }}
+            className="inline-block px-12 py-5 text-sm font-black tracking-widest transition-all duration-300 rounded-full shadow-2xl hover:scale-110 active:scale-95 bg-black text-white hover:bg-primary"
+            style={{ backgroundColor: '#150089', color: 'white' }}
           >
-            Our Services
+            EXPLORE SERVICES
           </Link>
         </MagneticButton>
       </motion.div>
@@ -233,7 +206,7 @@ function TestimonialsSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-    }, 5000) // Change every 5 seconds
+    }, 60000) // Change every 60 seconds (1 minute)
     return () => clearInterval(interval)
   }, [])
 
@@ -246,15 +219,20 @@ function TestimonialsSection() {
   }
 
   return (
-    <section className="py-24 lg:py-32 bg-white">
+    <section className="py-24 lg:py-32 bg-white overflow-hidden">
       <div className="max-w-4xl mx-auto px-6 lg:px-12">
-        <div className="text-center">
-          {/* Quote Icon */}
+        <div className="text-center relative">
+          {/* Single Massive Watermark Quote */}
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-12 select-none pointer-events-none opacity-[0.05] lg:opacity-[0.1] z-0">
+            <span className="text-[18rem] lg:text-[25rem] font-serif leading-none text-[#3df1f6]">“</span>
+          </div>
+
+          {/* Quote Icon - Main */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-12"
+            className="relative z-10 mb-12"
           >
             <svg className="w-16 h-12 mx-auto" viewBox="0 0 64 48" fill="#150089">
               <path d="M0 48V32C0 14.327 14.327 0 32 0h4v12h-4c-11.046 0-20 8.954-20 20v4h20v12H0zm32 0V32c0-17.673 14.327-32 32-32h4v12h-4c-11.046 0-20 8.954-20 20v4h20v12H32z" transform="rotate(180 32 24)" />
@@ -262,11 +240,11 @@ function TestimonialsSection() {
           </motion.div>
 
           {/* Testimonial Content */}
-          <div className="relative min-h-[200px] flex items-center justify-center">
+          <div className="relative min-h-[200px] flex items-center justify-center z-10">
             {/* Left Arrow */}
             <button
               onClick={prevTestimonial}
-              className="absolute left-0 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-full transition-colors group"
+              className="absolute left-[-2rem] lg:left-0 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-full transition-colors group z-20"
               aria-label="Previous testimonial"
             >
               <motion.div whileHover={{ x: -5 }} whileTap={{ scale: 0.9 }}>
@@ -280,18 +258,20 @@ function TestimonialsSection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.02 }}
                 transition={{ duration: 0.4 }}
-                className="px-16"
+                className="px-8 lg:px-16"
               >
-                <p className="text-lg md:text-xl lg:text-2xl text-gray-800 leading-relaxed mb-8">
-                  {testimonials[currentIndex].quote}
-                </p>
+                <div className="relative inline-block">
+                  <p className="text-xl md:text-2xl lg:text-3xl text-gray-800 leading-relaxed mb-8 font-medium">
+                    {testimonials[currentIndex].quote}
+                  </p>
+                </div>
                 <div>
-                  <p className="font-bold text-lg" style={{ color: '#150089' }}>{testimonials[currentIndex].name}</p>
-                  <p className="text-gray-500">{testimonials[currentIndex].company}</p>
+                  <p className="font-bold text-lg md:text-xl" style={{ color: '#150089' }}>{testimonials[currentIndex].name}</p>
+                  <p className="text-gray-500 uppercase tracking-[0.3em] text-[10px] font-bold mt-2">{testimonials[currentIndex].company}</p>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -299,7 +279,7 @@ function TestimonialsSection() {
             {/* Right Arrow */}
             <button
               onClick={nextTestimonial}
-              className="absolute right-0 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-full transition-colors group"
+              className="absolute right-[-2rem] lg:right-0 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-full transition-colors group z-20"
               aria-label="Next testimonial"
             >
               <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.9 }}>
@@ -317,7 +297,7 @@ function TestimonialsSection() {
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className="w-2 h-2 rounded-full transition-all duration-300"
-                style={{ 
+                style={{
                   backgroundColor: index === currentIndex ? '#150089' : '#d1d5db',
                   width: index === currentIndex ? '24px' : '8px'
                 }}
@@ -409,12 +389,15 @@ const values = [
 ]
 
 const parallaxImages = [
-  "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=400&fit=crop",
+  "/CREATIVE DIRECTION.jpg",
+  "/catering-restaurant-service.jpg",
+  "/banquet-table-restaurant.jpg",
+  "/images/_يبيله قهوة-13_page-0006.jpg",
+  "/images/_يبيله قهوة-13_page-0007.jpg",
+  "/images/_يبيله قهوة-13_page-0008.jpg",
+  "/images/_يبيله قهوة-13_page-0009.jpg",
+  "/images/_يبيله قهوة-14_page-0001.jpg",
+  "/images/_يبيله قهوة-14_page-0002.jpg",
 ]
 
 const phoneImages = [
@@ -426,7 +409,12 @@ const phoneImages = [
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [currentPhoneImage, setCurrentPhoneImage] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const { scrollYProgress: heroScrollProgress } = useScroll({
     target: heroRef,
@@ -446,7 +434,7 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-white text-foreground overflow-x-hidden">
+    <main className="min-h-screen bg-white text-foreground overflow-x-hidden relative">
       {/* Header */}
       <motion.header
         initial={{ y: -100 }}
@@ -457,23 +445,25 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <nav className="flex items-center justify-between h-28">
             <Link href="/" className="flex items-center">
-              <img src="/logo.svg" alt="Vertex Media" className="h-24 w-auto" />
+              <Image src="/logo.svg" alt="Vertex Media" width={180} height={96} priority className="h-24 w-auto" />
             </Link>
             <div className="hidden lg:flex items-center gap-10">
-              {["Services", "About", "Influencers", "Career", "Contact"].map((item) => (
-                <Link
+              {["Services", "About", "Influencers", "Contact"].map((item) => (
+                <a
                   key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="text-sm font-medium text-gray-600 hover:text-black transition-colors underline-grow"
+                  href={item === "About" ? "#about-section" : `#${item.toLowerCase()}`}
+                  className="text-sm font-medium text-gray-600 hover:text-black transition-colors underline-grow cursor-pointer"
                 >
                   {item}
-                </Link>
+                </a>
               ))}
             </div>
             <div className="flex items-center gap-4">
               <MagneticButton>
-                <button className="p-2 hover:bg-gray-100 transition-colors rounded-full">
-                  <Search className="w-5 h-5" />
+                <button className="p-2 transition-all duration-300 group relative">
+                  <div className="w-20 h-20 flex items-center justify-center transition-transform group-hover:scale-110">
+                    <Image src="/logo (1).svg" alt="Vertex Icon" width={72} height={66} className="w-full h-auto" />
+                  </div>
                 </button>
               </MagneticButton>
               <button
@@ -496,20 +486,20 @@ export default function Home() {
               className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
             >
               <div className="flex flex-col gap-4 py-6 px-6">
-                {["Services", "About", "Influencers", "Career", "Contact"].map((item, i) => (
+                {["Services", "About", "Influencers", "Contact"].map((item, i) => (
                   <motion.div
                     key={item}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
                   >
-                    <Link
-                      href={`#${item.toLowerCase()}`}
-                      className="text-lg font-medium"
+                    <a
+                      href={item === "About" ? "#about-section" : `#${item.toLowerCase()}`}
+                      className="text-lg font-medium cursor-pointer"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item}
-                    </Link>
+                    </a>
                   </motion.div>
                 ))}
               </div>
@@ -592,8 +582,19 @@ export default function Home() {
             >
               <div className="w-64 h-64 lg:w-96 lg:h-96 relative">
                 <div className="absolute inset-0 rounded-full blur-3xl animate-pulse" style={{ background: 'linear-gradient(to bottom right, rgba(61, 241, 246, 0.5), transparent)' }} />
-                <div className="absolute inset-8 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border animate-float" style={{ borderColor: 'rgba(61, 241, 246, 0.3)' }}>
-                  <Sparkles className="w-24 h-24 lg:w-32 lg:h-32 animate-spin-slow" style={{ color: '#3df1f6' }} />
+                <div className="absolute inset-8 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border animate-float overflow-hidden" style={{ borderColor: 'rgba(61, 241, 246, 0.3)' }}>
+                  <svg width="100%" height="100%" viewBox="0 0 396 361" aria-hidden="true" className="relative z-10 w-32 h-32 md:w-48 md:h-48 drop-shadow-2xl animate-spin-slow">
+                    <path
+                      transform="matrix(1,0,-0,1,172.5,128)"
+                      d="M95.2 0L55.4 77.3C44.5 98.4 39.1 102.2 39.1 102.2C38.2 102.6 36.3 103.3 27.3 104.8C15 102.6 10.3 99 10.3 99C8.7 97.8 4.1 93.4 0 83.2C2.7 83 9 82 17 76.6C19.5 74 24.1 65.8 24.1 65.8L32.7 49.2C36.8 40.6 39.9 35.2 51.5 15.9C71.7 2.3 95.2 0 95.2 0Z"
+                      fill="#3df1f6"
+                    />
+                    <path
+                      transform="matrix(1,0,-0,1,128,130)"
+                      d="M24.6 49C39.3 41.8 42.4 34.4 43.7 31.5C44.4 28.2 44.4 24.8 44.4 11.2C32.8 0 19.2 0 19.2 0H0L24.6 49Z"
+                      fill="#3df1f6"
+                    />
+                  </svg>
                 </div>
               </div>
             </motion.div>
@@ -721,11 +722,12 @@ export default function Home() {
                 className="flex-shrink-0 w-80 h-52 relative overflow-hidden group"
                 whileHover={{ scale: 1.05, zIndex: 10 }}
               >
-                <img
+                <Image
                   src={img}
                   alt={`Project ${i + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
-                  crossOrigin="anonymous"
+                  fill
+                  sizes="320px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-125"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -744,11 +746,12 @@ export default function Home() {
                 className="flex-shrink-0 w-80 h-52 relative overflow-hidden group"
                 whileHover={{ scale: 1.05, zIndex: 10 }}
               >
-                <img
+                <Image
                   src={img}
                   alt={`Project ${i + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
-                  crossOrigin="anonymous"
+                  fill
+                  sizes="320px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-125"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
@@ -800,97 +803,8 @@ export default function Home() {
       {/* CONTENT IS KING - Image Slideshow Text Masking */}
       <ContentIsKingSection />
 
-      {/* Services with Phone Mockup */}
-      <section id="services" className="py-24 lg:py-32 px-6 lg:px-12" style={{ backgroundColor: '#150089' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-center">
-            <div className="space-y-12">
-              {services.slice(0, 3).map((service, i) => (
-                <motion.div
-                  key={service.number}
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.15 }}
-                  whileHover={{ x: 20, scale: 1.02 }}
-                  className="space-y-2 cursor-pointer group"
-                >
-                  <div className="flex items-baseline gap-4">
-                    <span className="text-4xl md:text-5xl font-black transition-colors" style={{ color: '#3df1f6' }}>{service.number}</span>
-                  </div>
-                  <motion.div
-                    initial={{ width: "30%" }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.2, duration: 0.8 }}
-                    className="h-px transition-colors"
-                    style={{ backgroundColor: 'rgba(61, 241, 246, 0.4)' }}
-                  />
-                  <h3 className="text-lg md:text-xl font-medium text-white pt-2">{service.title}</h3>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 60, rotateY: -15 }}
-              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, type: "spring" }}
-              className="flex justify-center order-first lg:order-none"
-            >
-              <div className="relative group">
-                <div className="absolute -inset-4 rounded-[3.5rem] blur-xl opacity-30 group-hover:opacity-60 transition-opacity animate-pulse" style={{ background: 'linear-gradient(to right, #3df1f6, #150089)' }} />
-                <div className="relative w-64 md:w-72 bg-gray-800 rounded-[3rem] p-2 shadow-2xl">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-800 rounded-b-2xl z-10" />
-                  <div className="relative bg-black rounded-[2.5rem] overflow-hidden aspect-[9/19]">
-                    <AnimatePresence mode="wait">
-                      <motion.img
-                        key={currentPhoneImage}
-                        src={phoneImages[currentPhoneImage]}
-                        alt="Content Preview"
-                        className="w-full h-full object-cover"
-                        crossOrigin="anonymous"
-                        initial={{ opacity: 0, scale: 1.1 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.5 }}
-                      />
-                    </AnimatePresence>
-                  </div>
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-10 h-10 border-2 border-gray-600 rounded-full" />
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="space-y-12">
-              {services.slice(3, 6).map((service, i) => (
-                <motion.div
-                  key={service.number}
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.15 }}
-                  whileHover={{ x: -20, scale: 1.02 }}
-                  className="space-y-2 cursor-pointer group"
-                >
-                  <div className="flex items-baseline gap-4">
-                    <span className="text-4xl md:text-5xl font-black transition-colors" style={{ color: '#3df1f6' }}>{service.number}</span>
-                  </div>
-                  <motion.div
-                    initial={{ width: "30%" }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.2, duration: 0.8 }}
-                    className="h-px transition-colors"
-                    style={{ backgroundColor: 'rgba(61, 241, 246, 0.4)' }}
-                  />
-                  <h3 className="text-lg md:text-xl font-medium text-white pt-2">{service.title}</h3>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Services Section */}
+      <ServicesSection />
 
       {/* Influencers Section */}
       <section id="influencers" className="py-24 lg:py-32 px-6 lg:px-12 bg-white">
@@ -940,15 +854,18 @@ export default function Home() {
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   className="relative z-10"
                 >
-                  <img
-                    src="/images/influencer-3d-graphic.jpg"
-                    alt="Influencer Marketing 3D Illustration"
-                    className="w-full max-w-md lg:max-w-lg h-auto object-contain drop-shadow-2xl"
-                    crossOrigin="anonymous"
+                  <Image
+                    src="/images/influencer-graphic-new.webp"
+                    alt="Vertex Influencer Network & Creator Graphic"
+                    width={600}
+                    height={614}
+                    className="w-full max-w-md lg:max-w-lg object-contain drop-shadow-2xl"
+                    style={{ height: 'auto' }}
+                    priority
                   />
                 </motion.div>
                 {/* Background glow effect */}
-                <div 
+                <div
                   className="absolute inset-0 rounded-full blur-3xl opacity-20"
                   style={{ background: 'radial-gradient(circle, #3df1f6 0%, transparent 70%)' }}
                 />
@@ -969,11 +886,11 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="relative h-[50vh] lg:h-full"
           >
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&h=1000&fit=crop"
               alt="Fashion Model"
-              className="w-full h-full object-cover object-top"
-              crossOrigin="anonymous"
+              fill
+              className="object-cover object-top"
             />
           </motion.div>
 
@@ -1146,67 +1063,10 @@ export default function Home() {
       <TestimonialsSection />
 
       {/* Client Logos Marquee */}
-      <section className="py-16 bg-white overflow-hidden border-t border-gray-100">
-        <div className="relative">
-          <div className="flex animate-scroll-left" style={{ width: "200%" }}>
-            {[...Array(2)].map((_, setIndex) => (
-              <div key={setIndex} className="flex items-center justify-around min-w-[100%] gap-16 px-8">
-                {/* McDonald's */}
-                <div className="flex-shrink-0 h-16 w-32 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <svg viewBox="0 0 100 80" className="h-full w-auto">
-                    <path d="M10 80V20C10 10 20 0 30 0C40 0 45 10 50 20C55 10 60 0 70 0C80 0 90 10 90 20V80H75V25C75 20 70 15 70 20V80H55V25C55 20 50 15 50 20V80H45V25C45 20 40 15 40 20V80H25V25C25 20 30 15 30 20V80H10Z" fill="#FFC72C" />
-                  </svg>
-                </div>
-                {/* Volkswagen */}
-                <div className="flex-shrink-0 h-16 w-16 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <svg viewBox="0 0 100 100" className="h-full w-auto">
-                    <circle cx="50" cy="50" r="48" fill="none" stroke="#1E3A8A" strokeWidth="4" />
-                    <path d="M25 35L50 70L75 35M35 35L50 60L65 35" fill="none" stroke="#1E3A8A" strokeWidth="4" />
-                  </svg>
-                </div>
-                {/* Red Bull */}
-                <div className="flex-shrink-0 h-12 w-28 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <span className="text-2xl font-black tracking-tight" style={{ color: '#CC0000' }}>Red Bull</span>
-                </div>
-                {/* KFC */}
-                <div className="flex-shrink-0 h-16 w-16 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <div className="bg-red-600 rounded-full w-14 h-14 flex items-center justify-center">
-                    <span className="text-white font-black text-xs">KFC</span>
-                  </div>
-                </div>
-                {/* Amazon */}
-                <div className="flex-shrink-0 h-10 w-28 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <span className="text-3xl font-bold tracking-tight text-black">amazon</span>
-                </div>
-                {/* Dubai Mall */}
-                <div className="flex-shrink-0 h-12 w-32 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <div className="text-center">
-                    <span className="text-[8px] tracking-[0.3em] text-gray-600 block">THE</span>
-                    <span className="text-lg font-bold tracking-wider text-black">DUBAI MALL</span>
-                  </div>
-                </div>
-                {/* Pepsi */}
-                <div className="flex-shrink-0 h-14 w-14 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                    <div className="absolute top-0 left-0 right-0 h-1/3 bg-red-500"></div>
-                    <div className="absolute top-1/3 left-0 right-0 h-1/3 bg-white"></div>
-                    <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-blue-500"></div>
-                  </div>
-                </div>
-                {/* Nike */}
-                <div className="flex-shrink-0 h-10 w-20 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <svg viewBox="0 0 100 40" className="h-8 w-auto">
-                    <path d="M10 30C20 30 80 10 95 5C80 15 30 35 10 30Z" fill="#000" />
-                  </svg>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ClientLogos />
 
-      {/* Digital Marketing - Space Theme */}
-      <section className="py-24 lg:py-32 gradient-space relative overflow-hidden">
+      {/* Digital Marketing - Brand Theme */}
+      <section className="py-24 lg:py-32 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #150089 0%, #0a0050 100%)' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <motion.div
             initial="hidden"
@@ -1215,24 +1075,38 @@ export default function Home() {
             variants={staggerContainer}
             className="text-center space-y-12"
           >
-            <motion.h2
-              variants={scaleUp}
-              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white glitch-text"
-            >
-              <TextReveal text="DIGITAL" className="block" />
-              <span className="block" style={{ color: '#3df1f6' }}>MARKETING</span>
-            </motion.h2>
+            <div className="relative inline-block">
+              {/* Floating Brand Icon - Left */}
+              <motion.div
+                animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute -left-12 top-10 w-10 h-10 rounded-full border border-[#3df1f6]/30 flex items-center justify-center bg-white/5 backdrop-blur-sm hidden md:flex"
+              >
+                <svg width="20" height="20" viewBox="0 0 396 361" fill="#3df1f6">
+                  <path transform="matrix(0.05,0,0,0.05,8,7)" d="M95.2 0L55.4 77.3C44.5 98.4 39.1 102.2 39.1 102.2C38.2 102.6 36.3 103.3 27.3 104.8C15 102.6 10.3 99 10.3 99C8.7 97.8 4.1 93.4 0 83.2C2.7 83 9 82 17 76.6C19.5 74 24.1 65.8 24.1 65.8L32.7 49.2C36.8 40.6 39.9 35.2 51.5 15.9C71.7 2.3 95.2 0 95.2 0Z" />
+                </svg>
+              </motion.div>
+
+              <motion.h2
+                variants={scaleUp}
+                className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white glitch-text"
+              >
+                <TextReveal text="DIGITAL" className="block" />
+                <span className="block" style={{ color: '#3df1f6' }}>MARKETING</span>
+              </motion.h2>
+            </div>
 
             <motion.p
               variants={fadeUpVariants}
-              className="text-white/60 max-w-2xl mx-auto text-shimmer"
+              className="max-w-2xl mx-auto font-light tracking-[0.4em] uppercase text-sm md:text-base"
+              style={{ color: '#3df1f6' }}
             >
               HARNESS THE POWER OF DATA
             </motion.p>
 
             <motion.div
               variants={fadeUpVariants}
-              className="grid md:grid-cols-3 gap-6 pt-8"
+              className="grid md:grid-cols-3 gap-8 pt-12"
             >
               {[
                 { icon: Megaphone, title: "Ad Campaigns", desc: "Data-driven advertising across all major platforms" },
@@ -1245,34 +1119,36 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.2 }}
-                  whileHover={{ y: -10, scale: 1.05 }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 text-left group cursor-pointer hover:bg-white/10 transition-all card-3d"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="bg-white/5 backdrop-blur-xl border border-[#3df1f6]/20 p-10 text-left group cursor-pointer hover:bg-[#3df1f6]/10 hover:border-[#3df1f6]/50 transition-all duration-500 rounded-[2rem] shadow-2xl relative overflow-hidden"
                 >
-                  <item.icon className="w-10 h-10 mb-4 group-hover:scale-125 transition-transform" style={{ color: '#3df1f6' }} />
-                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-sm text-white/50">{item.desc}</p>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#3df1f6]/5 blur-3xl -mr-12 -mt-12 group-hover:bg-[#3df1f6]/10 transition-colors" />
+                  <item.icon className="w-12 h-12 mb-8 group-hover:scale-110 transition-transform duration-500" style={{ color: '#3df1f6' }} />
+                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-[#3df1f6] transition-colors">{item.title}</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed font-light">{item.desc}</p>
                 </motion.div>
               ))}
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Animated Stars */}
+        {/* Brand Theme Stars */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(80)].map((_, i) => (
+          {isMounted && [...Array(40)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full"
+              className="absolute w-1 h-1 rounded-full"
               style={{
+                backgroundColor: i % 2 === 0 ? '#3df1f6' : '#ffffff',
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
               }}
               animate={{
-                opacity: [0.2, 1, 0.2],
-                scale: [1, 1.5, 1],
+                opacity: [0.1, 0.6, 0.1],
+                scale: [1, 1.2, 1],
               }}
               transition={{
-                duration: 2 + Math.random() * 2,
+                duration: 3 + Math.random() * 3,
                 repeat: Infinity,
                 delay: Math.random() * 2,
               }}
@@ -1281,67 +1157,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Career Section */}
-      <section id="career" className="py-24 lg:py-32 px-6 lg:px-12 text-white relative overflow-hidden" style={{ backgroundColor: '#0a0050' }}>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="text-center space-y-12"
+      {/* Pre-footer Section (Elevate) */}
+      <section id="about-section" className="relative w-full py-32 bg-[#150089] flex flex-col items-center justify-center px-6 text-center overflow-hidden scroll-mt-28">
+        {/* Abstract Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] lg:w-[1000px] h-[400px] bg-[#3df1f6] opacity-[0.15] blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight mb-8 leading-[0.9]"
           >
-            <motion.h2
-              variants={scaleUp}
-              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight glitch-text"
-            >
-              <TextReveal text="CREATING" className="block" />
-              <span className="block" style={{ color: '#3df1f6' }}>VIRTUAL WORLDS</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUpVariants}
-              className="text-white/50 max-w-xl mx-auto"
-            >
-              THE EXCITING WORLD AWAITS THE DRIVEN
-            </motion.p>
-            <motion.div variants={fadeUpVariants}>
-              <MagneticButton>
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center gap-3 text-white px-10 py-5 text-lg font-bold hover:bg-white hover:text-black transition-colors group animate-pulse-glow"
-                  style={{ backgroundColor: '#3df1f6', color: '#150089' }}
-                >
-                  Join Our Team
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                </Link>
-              </MagneticButton>
-            </motion.div>
+            We Don't Just Create.<br />
+            <span style={{ color: '#3df1f6' }}>We Elevate.</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg md:text-xl lg:text-2xl text-gray-300 font-light max-w-2xl mb-14 leading-relaxed"
+          >
+            Vertex Media is a full-service creative powerhouse. We transform visions into digital realities, crafting strategies and content that resonate deeply with the Gulf market.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-col items-center gap-8"
+          >
+            {/* Small Vertex Icon Circle */}
+            <div className="w-12 h-12 rounded-full border border-[#3df1f6]/30 flex items-center justify-center bg-[#150089]/50 backdrop-blur-sm">
+              <svg width="24" height="24" viewBox="0 0 396 361" fill="#3df1f6">
+                <path transform="matrix(0.06,0,0,0.06,10,8)" d="M95.2 0L55.4 77.3C44.5 98.4 39.1 102.2 39.1 102.2C38.2 102.6 36.3 103.3 27.3 104.8C15 102.6 10.3 99 10.3 99C8.7 97.8 4.1 93.4 0 83.2C2.7 83 9 82 17 76.6C19.5 74 24.1 65.8 24.1 65.8L32.7 49.2C36.8 40.6 39.9 35.2 51.5 15.9C71.7 2.3 95.2 0 95.2 0Z" />
+              </svg>
+            </div>
+
+            <MagneticButton>
+              <a
+                href="#contact"
+                className="group relative inline-flex items-center justify-center gap-4 px-12 py-6 bg-[#3df1f6] text-[#150089] font-bold text-xl uppercase tracking-widest overflow-hidden rounded-full hover:scale-105 transition-all duration-300 ease-out cursor-pointer"
+              >
+                <span className="relative z-10">Let's Talk</span>
+                <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform duration-300" />
+                <div className="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
+              </a>
+            </MagneticButton>
           </motion.div>
         </div>
-
-        {/* Floating Particles */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full"
-            style={{ backgroundColor: 'rgba(61, 241, 246, 0.4)' }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              bottom: "-10%",
-            }}
-            animate={{
-              y: [0, "-120vh"],
-              x: [0, (Math.random() - 0.5) * 200],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 8 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "linear",
-            }}
-          />
-        ))}
       </section>
 
       {/* Footer */}
