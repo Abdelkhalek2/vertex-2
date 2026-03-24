@@ -132,13 +132,17 @@ function ContentIsKingSection() {
             </mask>
           </defs>
 
-          {/* This is the scrolling corridor of images */}
           <g mask="url(#contentMask)">
             <motion.g
               animate={{ x: [0, -(images.length * 300)] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              transition={{
+                duration: 25, // مدة الحركة بتعتمد على عدد الصور عشان تبقى متناسقة
+                ease: "linear",
+                repeat: Infinity,
+              }}
+              style={{ willChange: "transform" }}
             >
-              {[...images, ...images, ...images].map((src, i) => (
+              {[...images, ...images].map((src, i) => (
                 <image
                   key={i}
                   href={src}
