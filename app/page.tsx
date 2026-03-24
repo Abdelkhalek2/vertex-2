@@ -121,7 +121,7 @@ function ContentIsKingSection() {
   ]
 
   return (
-    <section className="relative min-h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative min-h-[50vh] md:min-h-screen py-16 md:py-0 bg-white flex flex-col items-center justify-center overflow-hidden">
       <div className="relative w-full flex-1 flex flex-col items-center justify-center pointer-events-none select-none">
         <svg width="100%" height="100%" viewBox="0 0 1000 450" className="w-full h-auto max-h-[70vh]">
           <defs>
@@ -158,7 +158,7 @@ function ContentIsKingSection() {
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="relative z-20 pb-20"
+        className="relative z-20 pb-0 md:pb-20 mt-8 md:mt-0"
       >
         <MagneticButton>
           <Link
