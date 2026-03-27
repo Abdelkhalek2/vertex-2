@@ -380,7 +380,7 @@ export default function SocialMediaVideoScrub() {
             // 1. قللنا السكرول لـ 150vh في الموبايل عشان يخلص أسرع ومتحسش بمسافة كبيرة
             className="relative h-[150vh] md:h-[300vh]" 
             // 2. رجعنا اللون للسكشن الرئيسي عشان يغطي الشاشة وميكشفش الأبيض
-            style={{ background: "#050510" }}
+            style={{ background: "#050510", position: 'relative' }}
             aria-label="Vertex Media — WE IDEATE, CREATE, ELEVATE"
         >
             <div 

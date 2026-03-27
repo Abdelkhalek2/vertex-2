@@ -544,7 +544,7 @@ export default function Home() {
               className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
             >
               <div className="flex flex-col gap-4 py-6 px-6">
-                {["Services", "About", "Influencers", "Contact"].map((item, i) => (
+                {["Services", "About", "Influencers"].map((item, i) => (
                   <motion.div
                     key={item}
                     initial={{ opacity: 0, x: -20 }}
