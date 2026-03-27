@@ -70,7 +70,7 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
     const starsRef   = useRef<StarParticle[]>([]);
     const nebulasRef = useRef<NebulaOrb[]>([]);
     const timeRef    = useRef(0);
-    const isMobileRef = useRef(false); // 🔥 ضفنا دي عشان نعرف إحنا موبايل ولا لأ
+    const isMobileRef = useRef(false);
 
     useMotionValueEvent(scrollProgress, "change", (v) => { progRef.current = v; });
 
@@ -81,8 +81,7 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
 
         // ── Resize ──────────────────────────────────────────────────────────
         const resize = () => {
-            isMobileRef.current = window.innerWidth < 768; // تحديد إذا كان موبايل
-            // 🔥 السحر هنا: في الموبايل هنخلي الكثافة 1 عشان نرحم المعالج، وفي الديسكتوب هنخليها 2
+            isMobileRef.current = window.innerWidth < 768;
             const dpr = isMobileRef.current ? 1 : Math.min(window.devicePixelRatio, 2);
             canvas.width  = canvas.offsetWidth  * dpr;
             canvas.height = canvas.offsetHeight * dpr;
@@ -90,8 +89,7 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
         resize();
         window.addEventListener("resize", resize);
 
-        // ── Init background particles ────────────────────────────────────────
-        starsRef.current   = makeStars(isMobileRef.current ? 40 : 90); // 🔥 نقلل النجوم في الموبايل للنص
+        starsRef.current   = makeStars(isMobileRef.current ? 30 : 90); // تقليل النجوم للموبايل جداً
         nebulasRef.current = makeNebulas();
 
         // ── Draw loop ────────────────────────────────────────────────────────
@@ -105,8 +103,9 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
             const H  = canvas.height;
             const cx = W / 2;
             const cy = H / 2;
-            const isMobile = W < H;
-            const sc = isMobile ? (W * 1.5) / 615 : Math.min(W, H) / 615;
+            
+            // 🔥 ضبطنا حجم الكورة للموبايل عشان متبقاش ضخمة ومضغوطة
+            const sc = isMobileRef.current ? W / 420 : Math.min(W, H) / 615;
 
             ctx.clearRect(0, 0, W, H);
 
@@ -181,7 +180,6 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
                 .sort((a, b) => a.z - b.z);
 
             // ── Connection lines ────────────────────────────────────────────
-            // 🔥 الضربة القاضية للتقل: هنمنع رسم الخطوط المعقدة دي في الموبايل
             if (!isMobileRef.current) {
                 ctx.lineWidth = 0.55 * sc;
                 for (let a = 0; a < sorted.length - 1; a++) {
@@ -209,14 +207,18 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
                 const r     = (1.1 + depth * 3.8) * sc;
                 const alpha = 0.12 + depth * 0.88;
 
-                const grd = ctx.createRadialGradient(p.px, p.py, 0, p.px, p.py, r * 5);
-                grd.addColorStop(0, `rgba(61,241,246,${(alpha * 0.55).toFixed(3)})`);
-                grd.addColorStop(1, "rgba(61,241,246,0)");
-                ctx.fillStyle = grd;
-                ctx.beginPath();
-                ctx.arc(p.px, p.py, r * 5, 0, Math.PI * 2);
-                ctx.fill();
+                // 🔥 إلغاء التوهج (Halo) للنقط في الموبايل.. ده كان بيحرق المعالج!
+                if (!isMobileRef.current) {
+                    const grd = ctx.createRadialGradient(p.px, p.py, 0, p.px, p.py, r * 5);
+                    grd.addColorStop(0, `rgba(61,241,246,${(alpha * 0.55).toFixed(3)})`);
+                    grd.addColorStop(1, "rgba(61,241,246,0)");
+                    ctx.fillStyle = grd;
+                    ctx.beginPath();
+                    ctx.arc(p.px, p.py, r * 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
 
+                // Core dot (يُطبع في كل الشاشات)
                 ctx.fillStyle = `rgba(61,241,246,${alpha.toFixed(3)})`;
                 ctx.beginPath();
                 ctx.arc(p.px, p.py, r, 0, Math.PI * 2);
@@ -326,14 +328,14 @@ function PhraseLayer({ text, index, total, progress }: PhraseLayerProps) {
             }}
         >
             <h2
-                className="text-[4.5rem] sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-white tracking-tighter leading-none select-none px-4"
+                // 🔥 استخدمنا text-[11vw] للموبايل عشان يتناسب مع عرض أي شاشة، وضفنا whitespace-nowrap لمنع الكسر
+                className="text-[11vw] sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-white tracking-tighter leading-none select-none px-4 whitespace-nowrap"
                 style={{
                     display: "flex",
-                    flexWrap: "wrap",
+                    flexWrap: "nowrap", // 🔥 نمنع الكسر نهائياً
                     justifyContent: "center",
                     fontFamily: "var(--font-gess), sans-serif",
                     fontWeight: 700,
-                    // 🔥 خففنا الشادو شوية عشان كان بيسحب من رامات الموبايل وقت الـ Animation
                     textShadow: "0 0 30px rgba(61,241,246,0.3)",
                 }}
             >
