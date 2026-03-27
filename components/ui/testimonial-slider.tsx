@@ -1,11 +1,10 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { motion, AnimatePresence, PanInfo } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-// Defines the data structure for a single testimonial
 export interface Testimonial {
   image: string
   quote: string
@@ -14,13 +13,11 @@ export interface Testimonial {
   rating: number
 }
 
-// Defines the props accepted by the TestimonialSlider component
 interface TestimonialSliderProps {
   testimonials: Testimonial[]
   className?: string
 }
 
-// A reusable StarRating component to display ratings visually
 const StarRating = ({ rating, className }: { rating: number; className?: string }) => {
   return (
     <div className={cn("flex items-center gap-1", className)}>
@@ -31,36 +28,46 @@ const StarRating = ({ rating, className }: { rating: number; className?: string 
   )
 }
 
-// The main TestimonialSlider component
 export const TestimonialSlider = ({ testimonials, className }: TestimonialSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
 
-  // Memoized function to handle the "next" slide transition
+  // 🔥 حالات تتبع حركة صباع اليوزر على الشاشة
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
   const handleNext = useCallback(() => {
     setDirection(1)
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
   }, [testimonials.length])
 
-  // Memoized function to handle the "previous" slide transition
   const handlePrevious = useCallback(() => {
     setDirection(-1)
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
   }, [testimonials.length])
 
-  // الدالة المسؤولة عن السحب (Swipe)
-  const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 50 // لو اليوزر سحب أكتر من 50 بيكسل، غير السلايد
-    if (info.offset.x < -swipeThreshold) {
-      handleNext()
-    } else if (info.offset.x > swipeThreshold) {
-      handlePrevious()
-    }
+  // 🔥 دوال التحكم في السحب (Native Touch Events - الأقوى للموبايل)
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null) 
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50 // سحب للشمال (التالي)
+    const isRightSwipe = distance < -50 // سحب لليمين (السابق)
+    
+    if (isLeftSwipe) handleNext()
+    if (isRightSwipe) handlePrevious()
   }
 
   const currentTestimonial = testimonials[currentIndex]
 
-  // Animation variants for the slide transition using Framer Motion
   const slideVariants = {
     hidden: (direction: number) => ({
       x: direction > 0 ? "100%" : "-100%",
@@ -80,7 +87,13 @@ export const TestimonialSlider = ({ testimonials, className }: TestimonialSlider
 
   return (
     <div className={cn("relative w-full max-w-4xl mx-auto overflow-visible px-8 md:px-12", className)}>
-      <div className="relative min-h-[400px] md:min-h-[320px] flex items-center justify-center py-8 overflow-hidden md:overflow-visible">
+      <div 
+        // 🔥 ربطنا الـ Touch Events بالحاوية الرئيسية اللي شايلة السلايدر
+        className="relative min-h-[400px] md:min-h-[320px] flex items-center justify-center py-8 overflow-hidden md:overflow-visible touch-pan-y"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -89,47 +102,45 @@ export const TestimonialSlider = ({ testimonials, className }: TestimonialSlider
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute w-full h-full cursor-grab active:cursor-grabbing"
-            // إضافات السحب (Drag Properties)
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={handleDragEnd}
+            className="absolute w-full h-full"
           >
-            <div className="flex flex-col md:flex-row items-center justify-center w-full h-full p-4 pointer-events-none md:pointer-events-auto">
+            <div className="flex flex-col md:flex-row items-center justify-center w-full h-full p-4 select-none">
+              
               {/* Image Section */}
-              <div className="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0 mb-4 md:mb-0 md:mr-[-4rem] z-10 pointer-events-auto">
+              <div className="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0 mb-4 md:mb-0 md:mr-[-4rem] z-10">
                 <img
                   src={currentTestimonial.image || "/placeholder.svg"}
                   alt={currentTestimonial.name}
                   className="w-full h-full object-cover rounded-2xl shadow-lg pointer-events-none"
+                  draggable="false"
                 />
               </div>
 
               {/* Text & Controls Section */}
-              <div className="relative w-full bg-card text-card-foreground rounded-2xl shadow-xl pt-8 md:pt-4 pl-4 md:pl-24 pr-4 pb-4 pointer-events-auto">
+              <div className="relative w-full bg-card text-card-foreground rounded-2xl shadow-xl pt-8 md:pt-4 pl-4 md:pl-24 pr-4 pb-4">
                 <Quote className="absolute top-4 left-4 h-8 w-8 text-accent/20" aria-hidden="true" />
-                <blockquote className="text-sm md:text-base mb-4 leading-relaxed font-sans cursor-text">
+                <blockquote className="text-sm md:text-base mb-4 leading-relaxed font-sans">
                   {currentTestimonial.quote}
                 </blockquote>
                 <StarRating rating={currentTestimonial.rating} className="mb-4" />
                 <div className="flex items-center justify-between">
-                  <div className="pr-12 cursor-text">
+                  <div className="pr-12">
                     <p className="font-serif font-bold text-lg text-foreground">{currentTestimonial.name}</p>
                     <p className="text-sm text-muted-foreground font-sans">{currentTestimonial.role}</p>
                   </div>
+                  
                   {/* Navigation Controls */}
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={handlePrevious}
-                      className="inline-flex items-center justify-center rounded-full h-10 w-10 bg-secondary hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 z-20"
+                      onClick={(e) => { e.stopPropagation(); handlePrevious(); }}
+                      className="inline-flex items-center justify-center rounded-full h-10 w-10 bg-secondary hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 z-20 relative"
                       aria-label="Previous testimonial"
                     >
                       <ChevronLeft className="h-5 w-5" />
                     </button>
                     <button
-                      onClick={handleNext}
-                      className="inline-flex items-center justify-center rounded-full h-10 w-10 bg-secondary hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 z-20"
+                      onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                      className="inline-flex items-center justify-center rounded-full h-10 w-10 bg-secondary hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 z-20 relative"
                       aria-label="Next testimonial"
                     >
                       <ChevronRight className="h-5 w-5" />
@@ -141,8 +152,9 @@ export const TestimonialSlider = ({ testimonials, className }: TestimonialSlider
           </motion.div>
         </AnimatePresence>
       </div>
+
       {/* Dot Indicators */}
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-4 relative z-20">
         {testimonials.map((_, index) => (
           <button
             key={index}
