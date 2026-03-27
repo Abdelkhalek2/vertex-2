@@ -374,18 +374,19 @@ export default function SocialMediaVideoScrub() {
     return (
         <section
             ref={sectionRef}
-            // 1. قللنا مسافة السكرول في الموبايل لـ 200vh عشان السكشن صغر
-            className="relative h-[200vh] md:h-[300vh]" 
+            // 1. قللنا السكرول لـ 150vh في الموبايل عشان يخلص أسرع ومتحسش بمسافة كبيرة
+            className="relative h-[150vh] md:h-[300vh]" 
+            // 2. رجعنا اللون للسكشن الرئيسي عشان يغطي الشاشة وميكشفش الأبيض
+            style={{ background: "#050510" }}
             aria-label="Vertex Media — WE IDEATE, CREATE, ELEVATE"
         >
             <div 
-                // 2. في الموبايل: الطول 80vh ونازل من فوق 10vh .. وفي الديسكتوب: الطول h-screen و top-0 زي ما هو
-                className="sticky top-[10vh] md:top-0 h-[80vh] md:h-screen w-full overflow-hidden"
-                // 3. نقلنا لون الخلفية هنا عشان المساحة الفاضية فوق وتحت تختفي وتاخد لون الموقع العادي
-                style={{ background: "#050510" }} 
+                // 3. رجعناها الشاشة كاملة (h-screen) من غير فراغات فوق وتحت
+                className="sticky top-0 h-screen w-full overflow-hidden"
             >
-
+                
                 {/* ── Background radial glow ─────────────────────── */}
+
                 <div
                     className="absolute inset-0"
                     style={{
