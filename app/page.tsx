@@ -1108,7 +1108,7 @@ export default function Home() {
                   variants={slideInLeft}
                   className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1]"
                 >
-                  <TextReveal text="Influencers and" className="block text-black" />
+                  <TextReveal text="Influencers and" className="block text-[#150089]" />
                   <span className="block mt-1" style={{ color: '#3df1f6' }}>Creators</span>
                 </motion.h2>
                 <div className="w-12 md:w-16 h-1 bg-gray-400" />
