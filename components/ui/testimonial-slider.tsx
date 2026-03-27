@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, Variants } from "framer-motion"
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -68,7 +68,7 @@ export const TestimonialSlider = ({ testimonials, className }: TestimonialSlider
 
   const currentTestimonial = testimonials[currentIndex]
 
-  const slideVariants = {
+  const slideVariants: Variants = {
     hidden: (direction: number) => ({
       x: direction > 0 ? "100%" : "-100%",
       opacity: 0,
