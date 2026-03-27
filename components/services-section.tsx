@@ -140,7 +140,7 @@ export function ServicesSection() {
           {SERVICES.slice(0, 3).map((service) => (
             <motion.div
               key={service.id}
-              className="cursor-pointer"
+              className="cursor-pointer select-none"
               onMouseEnter={() => setActiveId(service.id)}
               onMouseLeave={() => setActiveId(null)}
               whileHover={{ x: 15 }}
@@ -207,7 +207,7 @@ export function ServicesSection() {
           {SERVICES.slice(3, 6).map((service) => (
             <motion.div
               key={service.id}
-              className="cursor-pointer"
+              className="cursor-pointer select-none"
               onMouseEnter={() => setActiveId(service.id)}
               onMouseLeave={() => setActiveId(null)}
               whileHover={{ x: -15 }}
