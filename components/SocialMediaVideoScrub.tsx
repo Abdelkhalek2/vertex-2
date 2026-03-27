@@ -60,6 +60,7 @@ function makeNebulas(): NebulaOrb[] {
 }
 
 // ─── Globe Canvas ─────────────────────────────────────────────────────────────
+// ─── Globe Canvas ─────────────────────────────────────────────────────────────
 function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }) {
     const canvasRef  = useRef<HTMLCanvasElement>(null);
     const rafRef     = useRef<number>(0);
@@ -69,6 +70,7 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
     const starsRef   = useRef<StarParticle[]>([]);
     const nebulasRef = useRef<NebulaOrb[]>([]);
     const timeRef    = useRef(0);
+    const isMobileRef = useRef(false); // 🔥 ضفنا دي عشان نعرف إحنا موبايل ولا لأ
 
     useMotionValueEvent(scrollProgress, "change", (v) => { progRef.current = v; });
 
@@ -79,7 +81,9 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
 
         // ── Resize ──────────────────────────────────────────────────────────
         const resize = () => {
-            const dpr = Math.min(window.devicePixelRatio, 2);
+            isMobileRef.current = window.innerWidth < 768; // تحديد إذا كان موبايل
+            // 🔥 السحر هنا: في الموبايل هنخلي الكثافة 1 عشان نرحم المعالج، وفي الديسكتوب هنخليها 2
+            const dpr = isMobileRef.current ? 1 : Math.min(window.devicePixelRatio, 2);
             canvas.width  = canvas.offsetWidth  * dpr;
             canvas.height = canvas.offsetHeight * dpr;
         };
@@ -87,7 +91,7 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
         window.addEventListener("resize", resize);
 
         // ── Init background particles ────────────────────────────────────────
-        starsRef.current   = makeStars(90);
+        starsRef.current   = makeStars(isMobileRef.current ? 40 : 90); // 🔥 نقلل النجوم في الموبايل للنص
         nebulasRef.current = makeNebulas();
 
         // ── Draw loop ────────────────────────────────────────────────────────
@@ -101,7 +105,8 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
             const H  = canvas.height;
             const cx = W / 2;
             const cy = H / 2;
-            const sc = Math.min(W, H) / 615;
+            const isMobile = W < H;
+            const sc = isMobile ? (W * 1.5) / 615 : Math.min(W, H) / 615;
 
             ctx.clearRect(0, 0, W, H);
 
@@ -110,7 +115,6 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
             for (const orb of nebulasRef.current) {
                 orb.x += orb.vx;
                 orb.y += orb.vy;
-                // wrap
                 if (orb.x < -0.2) orb.x = 1.2;
                 if (orb.x >  1.2) orb.x = -0.2;
                 if (orb.y < -0.2) orb.y = 1.2;
@@ -143,7 +147,6 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
                 const sx = s.x * W;
                 const sy = s.y * H;
 
-                // Soft glow
                 const sg = ctx.createRadialGradient(sx, sy, 0, sx, sy, s.r * 3.5);
                 sg.addColorStop(0, `rgba(200,240,255,${(twinkledAlpha * 0.7).toFixed(3)})`);
                 sg.addColorStop(1, "rgba(200,240,255,0)");
@@ -152,63 +155,60 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
                 ctx.arc(sx, sy, s.r * 3.5, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Core
                 ctx.fillStyle = `rgba(220,245,255,${twinkledAlpha.toFixed(3)})`;
                 ctx.beginPath();
                 ctx.arc(sx, sy, s.r, 0, Math.PI * 2);
                 ctx.fill();
             }
 
-            // ── Rotation angles (scroll + auto) ────────────────────────────
+            // ── Rotation angles ────────────────────────────
             const ry = progRef.current * Math.PI * 2.5 + autoRotRef.current;
             const rx = Math.sin(progRef.current * Math.PI * 1.2) * 0.28;
 
             // ── Project all points ──────────────────────────────────────────
             type Proj = { px: number; py: number; z: number };
             const pts2d: Proj[] = SPHERE_PTS.map(([x, y, z]) => {
-                // Rotate around Y
                 const x1 = x * Math.cos(ry) + z * Math.sin(ry);
                 const z1 = -x * Math.sin(ry) + z * Math.cos(ry);
-                // Rotate around X
                 const y2 = y  * Math.cos(rx) - z1 * Math.sin(rx);
                 const z2 = y  * Math.sin(rx) + z1 * Math.cos(rx);
-                // Perspective project
                 const fsc = (FOV / (FOV + z2 + RADIUS * 0.6)) * sc;
                 return { px: cx + x1 * fsc, py: cy + y2 * fsc, z: z2 };
             });
 
-            // Sort back → front for painter's algorithm
             const sorted = pts2d
                 .map((p, i) => ({ ...p, i }))
                 .sort((a, b) => a.z - b.z);
 
             // ── Connection lines ────────────────────────────────────────────
-            ctx.lineWidth = 0.55 * sc;
-            for (let a = 0; a < sorted.length - 1; a++) {
-                const pa = sorted[a];
-                for (let b = a + 1; b < sorted.length; b++) {
-                    const pb  = sorted[b];
-                    const d   = Math.hypot(pa.px - pb.px, pa.py - pb.py);
-                    const lim = CONN_DIST * sc;
-                    if (d < lim) {
-                        const t     = 1 - d / lim;
-                        const depth = (Math.min(pa.z, pb.z) + RADIUS) / (2 * RADIUS);
-                        ctx.beginPath();
-                        ctx.moveTo(pa.px, pa.py);
-                        ctx.lineTo(pb.px, pb.py);
-                        ctx.strokeStyle = `rgba(61,241,246,${(t * depth * 0.38).toFixed(3)})`;
-                        ctx.stroke();
+            // 🔥 الضربة القاضية للتقل: هنمنع رسم الخطوط المعقدة دي في الموبايل
+            if (!isMobileRef.current) {
+                ctx.lineWidth = 0.55 * sc;
+                for (let a = 0; a < sorted.length - 1; a++) {
+                    const pa = sorted[a];
+                    for (let b = a + 1; b < sorted.length; b++) {
+                        const pb  = sorted[b];
+                        const d   = Math.hypot(pa.px - pb.px, pa.py - pb.py);
+                        const lim = CONN_DIST * sc;
+                        if (d < lim) {
+                            const t     = 1 - d / lim;
+                            const depth = (Math.min(pa.z, pb.z) + RADIUS) / (2 * RADIUS);
+                            ctx.beginPath();
+                            ctx.moveTo(pa.px, pa.py);
+                            ctx.lineTo(pb.px, pb.py);
+                            ctx.strokeStyle = `rgba(61,241,246,${(t * depth * 0.38).toFixed(3)})`;
+                            ctx.stroke();
+                        }
                     }
                 }
             }
 
             // ── Dots ────────────────────────────────────────────────────────
             for (const p of sorted) {
-                const depth = (p.z + RADIUS) / (2 * RADIUS); // 0=back 1=front
+                const depth = (p.z + RADIUS) / (2 * RADIUS);
                 const r     = (1.1 + depth * 3.8) * sc;
                 const alpha = 0.12 + depth * 0.88;
 
-                // Glow halo
                 const grd = ctx.createRadialGradient(p.px, p.py, 0, p.px, p.py, r * 5);
                 grd.addColorStop(0, `rgba(61,241,246,${(alpha * 0.55).toFixed(3)})`);
                 grd.addColorStop(1, "rgba(61,241,246,0)");
@@ -217,7 +217,6 @@ function GlobeCanvas({ scrollProgress }: { scrollProgress: MotionValue<number> }
                 ctx.arc(p.px, p.py, r * 5, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Core dot
                 ctx.fillStyle = `rgba(61,241,246,${alpha.toFixed(3)})`;
                 ctx.beginPath();
                 ctx.arc(p.px, p.py, r, 0, Math.PI * 2);
@@ -309,6 +308,7 @@ interface PhraseLayerProps {
     progress: MotionValue<number>;
 }
 
+// ─── Phrase layer ─────────────────────────────────────────────────────────────
 function PhraseLayer({ text, index, total, progress }: PhraseLayerProps) {
     const segment = 1 / total;
     const start   = index * segment;
@@ -326,14 +326,15 @@ function PhraseLayer({ text, index, total, progress }: PhraseLayerProps) {
             }}
         >
             <h2
-                className="text-6xl md:text-8xl lg:text-[9rem] font-black text-white tracking-tighter leading-none select-none px-4"
+                className="text-[4.5rem] sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-white tracking-tighter leading-none select-none px-4"
                 style={{
                     display: "flex",
                     flexWrap: "wrap",
                     justifyContent: "center",
                     fontFamily: "var(--font-gess), sans-serif",
                     fontWeight: 700,
-                    textShadow: "0 0 60px rgba(61,241,246,0.35), 0 0 120px rgba(61,241,246,0.15)",
+                    // 🔥 خففنا الشادو شوية عشان كان بيسحب من رامات الموبايل وقت الـ Animation
+                    textShadow: "0 0 30px rgba(61,241,246,0.3)",
                 }}
             >
                 {chars.map((char, i) => (

@@ -941,7 +941,7 @@ export default function Home() {
       </section>
 
       {/* Horizontal Parallax Images */}
-      <section className="py-16 bg-gray-100 overflow-hidden">
+<section className="py-16 bg-gray-100 overflow-hidden">
         <div className="mb-6">
           <div className="flex gap-6 animate-scroll-left hover:[animation-play-state:paused]" style={{ width: "200%" }}>
             {[...parallaxImages, ...parallaxImages].map((img, i) => (
@@ -949,12 +949,15 @@ export default function Home() {
                 key={`row1-${i}`}
                 className="flex-shrink-0 w-80 h-52 relative overflow-hidden group"
                 whileHover={{ scale: 1.05, zIndex: 10 }}
+                style={{ transform: "translateZ(0)" }} // 🔥 تسريع كارت الشاشة
               >
                 <Image
                   src={img}
                   alt={`Project ${i + 1}`}
                   fill
                   sizes="320px"
+                  priority // 🔥 منع التهنيج
+                  unoptimized // 🔥 منع التهنيج
                   className="object-cover transition-transform duration-700 group-hover:scale-125"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -973,12 +976,15 @@ export default function Home() {
                 key={`row2-${i}`}
                 className="flex-shrink-0 w-80 h-52 relative overflow-hidden group"
                 whileHover={{ scale: 1.05, zIndex: 10 }}
+                style={{ transform: "translateZ(0)" }} // 🔥 تسريع كارت الشاشة
               >
                 <Image
                   src={img}
                   alt={`Project ${i + 1}`}
                   fill
                   sizes="320px"
+                  priority // 🔥 منع التهنيج
+                  unoptimized // 🔥 منع التهنيج
                   className="object-cover transition-transform duration-700 group-hover:scale-125"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -987,7 +993,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      
       {/* Values Section with Animated Text */}
       <section id="about" className="py-16 px-6 lg:px-12 bg-gray-50 border-y border-gray-200">
         <div className="max-w-7xl mx-auto">
