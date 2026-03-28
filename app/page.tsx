@@ -857,23 +857,42 @@ export default function Home() {
                   We create powerful, innovative, fun, and memorable content. Our company is centered on the idea that everything you could possibly need is available under one roof.
                 </motion.p>
               </div>
-              <motion.div
+<motion.div
                 variants={slideInRight}
                 className="flex justify-center lg:justify-end"
               >
-                {/* ── Animated Phone Mockup ──────────────────────── */}
+                {/* ── Animated Phone Mockup (iPhone 16 Pro Style) ──────────────────────── */}
                 <div className="relative group animate-float-slow">
                   {/* Glow */}
                   <div
                     className="absolute -inset-4 rounded-[3.5rem] blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500 animate-pulse"
                     style={{ background: 'linear-gradient(135deg, #150089, #3df1f6)' }}
                   />
-                  {/* Phone frame */}
-                  <div className="relative w-52 md:w-60 bg-gray-900 rounded-[3rem] p-2 shadow-2xl">
-                    {/* Notch */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-gray-900 rounded-b-2xl z-10" />
+                  
+                  {/* Phone frame (Titanium Look) */}
+                  <div className="relative w-52 md:w-60 bg-gradient-to-b from-gray-700 via-gray-900 to-gray-800 rounded-[3rem] p-1.5 shadow-2xl border border-gray-600/50">
+                    
+                    {/* Hardware Buttons (Sleek Details) */}
+                    {/* Action Button */}
+                    <div className="absolute top-20 -left-[2px] w-[3px] h-6 bg-gray-600 rounded-l-md" />
+                    {/* Volume Up */}
+                    <div className="absolute top-32 -left-[2px] w-[3px] h-10 bg-gray-600 rounded-l-md" />
+                    {/* Volume Down */}
+                    <div className="absolute top-44 -left-[2px] w-[3px] h-10 bg-gray-600 rounded-l-md" />
+                    {/* Power Button */}
+                    <div className="absolute top-36 -right-[2px] w-[3px] h-14 bg-gray-600 rounded-r-md" />
+
                     {/* Screen */}
-                    <div className="relative bg-black rounded-[2.5rem] overflow-hidden aspect-[9/19]">
+                    <div className="relative bg-black rounded-[2.5rem] overflow-hidden aspect-[9/19] border-[4px] border-black">
+                      
+                      {/* Dynamic Island 🏝️ */}
+                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[5.5rem] h-6 bg-black rounded-full z-30 flex items-center justify-end px-1.5 shadow-sm">
+                        {/* Camera lens reflection */}
+                        <div className="w-3.5 h-3.5 rounded-full bg-[#111] border border-[#222] relative overflow-hidden">
+                            <div className="absolute top-0.5 right-0.5 w-1 h-1 rounded-full bg-blue-900/40" />
+                        </div>
+                      </div>
+
                       <AnimatePresence mode="wait">
                         <motion.img
                           key={currentPhoneImage}
@@ -887,28 +906,31 @@ export default function Home() {
                           crossOrigin="anonymous"
                         />
                       </AnimatePresence>
+
                       {/* Social media overlay UI */}
-                      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#3df1f6] to-[#150089]" />
-                          <span className="text-white text-[9px] font-bold">@vertexmedia</span>
+                      <div className="absolute bottom-0 left-0 right-0 pt-10 pb-6 px-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#3df1f6] to-[#150089] border border-white/20 shadow-lg" />
+                          {/* تحديث اليوزر نيم لـ @vertexmedia.qa */}
+                          <span className="text-white text-[11px] font-bold drop-shadow-md tracking-wide">@vertexmedia.qa</span>
                         </div>
-                        <div className="flex gap-3 justify-end">
+                        <div className="flex gap-4 justify-end mb-2">
                           {["❤️", "💬", "↗️"].map((icon, i) => (
                             <motion.span
                               key={i}
-                              animate={{ scale: [1, 1.3, 1] }}
+                              animate={{ scale: [1, 1.25, 1] }}
                               transition={{ duration: 1.5, delay: i * 0.3, repeat: Infinity }}
-                              className="text-sm"
+                              className="text-lg drop-shadow-lg"
                             >
                               {icon}
                             </motion.span>
                           ))}
                         </div>
                       </div>
+
+                      {/* iOS Home Swipe Indicator (الشريط الأبيض اللي تحت) */}
+                      <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-white/80 rounded-full z-30" />
                     </div>
-                    {/* Home button */}
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 border-2 border-gray-700 rounded-full" />
                   </div>
                 </div>
               </motion.div>
@@ -1661,7 +1683,8 @@ export default function Home() {
               className="flex flex-col md:flex-row items-center justify-between gap-6"
             >
               <p className="text-sm text-gray-500">
-                {new Date().getFullYear()} Vertex Media. All rights reserved.
+                {new Date().getFullYear()} 
+@vertexmedia.qa. All rights reserved.
               </p>
               
               {/* Social Media Links */}
